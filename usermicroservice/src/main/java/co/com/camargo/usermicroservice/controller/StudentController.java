@@ -1,45 +1,29 @@
 package co.com.camargo.usermicroservice.controller;
 
+import co.com.camargo.libr.controller.CommonController;
 import co.com.camargo.usermicroservice.models.entity.Student;
 import co.com.camargo.usermicroservice.service.StudentService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/student")
-public class StudentController {
+public class StudentController extends CommonController<Student, StudentService> {
     private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
+        super(studentService);
         this.studentService = studentService;
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(studentService.findAll());
-    }
-
-    @GetMapping("/get/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<Student> student = studentService.findById(id);
-        if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody Student student) {
-        if (student.getName() == null || student.getLastName() == null || student.getEmail() == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        Student dbStudent = studentService.save(student);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dbStudent);
-    }
+    @Value("config.balancer.test")
+    private String testBalancer;
 
     @PutMapping("/update")
     public ResponseEntity<?> update(Student student) {
@@ -63,10 +47,13 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        studentService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    //    Balancer test
+    @GetMapping("/balancer-test")
+    public ResponseEntity<?> testBalancer() {
+        Map<String, Object> response = new HashMap<String, Object> ();
+        response.put("testBalancer", testBalancer);
+        response.put("student", studentService.findAll());
+        return ResponseEntity.ok(response);
     }
 
 }
