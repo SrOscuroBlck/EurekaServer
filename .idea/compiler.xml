@@ -9,17 +9,18 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eurekaserver" />
         <module name="GatewayMS" />
+        <module name="coursesmicroservice" />
+        <module name="entitycommon" />
         <module name="libr" />
         <module name="usermicroservice" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="eurekaserver" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="GatewayMS" options="-parameters" />
+      <module name="coursesmicroservice" options="-parameters" />
+      <module name="entitycommon" options="-parameters" />
       <module name="eurekaserver" options="-parameters" />
       <module name="libr" options="-parameters" />
       <module name="usermicroservice" options="-parameters" />

@@ -1,10 +1,13 @@
 package co.com.camargo.libr.controller;
 
 import co.com.camargo.libr.service.CommonService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class CommonController<E, S extends CommonService<E>> {
@@ -13,6 +16,19 @@ public class CommonController<E, S extends CommonService<E>> {
     public CommonController(S service) {
         this.service = service;
     }
+
+    @Value("config.balancer.test")
+    private String testBalancer;
+
+    //    Balancer test
+    @GetMapping("/balancer-test")
+    public ResponseEntity<?> testBalancer() {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("testBalancer", testBalancer);
+        response.put("student", service.findAll());
+        return ResponseEntity.ok(response);
+    }
+
 
     @GetMapping("/get")
     public ResponseEntity<?> findAll() {

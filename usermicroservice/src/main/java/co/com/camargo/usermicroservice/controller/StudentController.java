@@ -1,7 +1,7 @@
 package co.com.camargo.usermicroservice.controller;
 
+import co.com.camargo.entitycommon.models.entity.Student;
 import co.com.camargo.libr.controller.CommonController;
-import co.com.camargo.usermicroservice.models.entity.Student;
 import co.com.camargo.usermicroservice.service.StudentService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -25,12 +25,18 @@ public class StudentController extends CommonController<Student, StudentService>
     @Value("config.balancer.test")
     private String testBalancer;
 
-    @PutMapping("/update")
-    public ResponseEntity<?> update(Student student) {
-        Optional<Student> ob = studentService.findById(student.getId());
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Student student) {
+        if (id == null) {
+            return ResponseEntity.badRequest().body("Student ID must not be null");
+        }
+
+        Optional<Student> ob = studentService.findById(id);
         if (ob.isPresent()) {
             Student dbStudent = ob.get();
 
+            // Actualiza los campos necesarios
             if (student.getName() != null) {
                 dbStudent.setName(student.getName());
             }
@@ -46,6 +52,7 @@ public class StudentController extends CommonController<Student, StudentService>
             return ResponseEntity.notFound().build();
         }
     }
+
 
     //    Balancer test
     @GetMapping("/balancer-test")

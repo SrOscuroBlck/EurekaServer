@@ -1,4 +1,4 @@
-package co.com.camargo.usermicroservice;
+package co.com.camargo.coursesmicroservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,15 +10,17 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {
         "co.com.camargo.entitycommon",
-        "co.com.camargo.usermicroservice",
+        "co.com.camargo.coursesmicroservice",
 })
 @EntityScan(basePackages = {
-        "co.com.camargo.entitycommon.models.entity"
+        "co.com.camargo.entitycommon.models.entity",
+        "co.com.camargo.coursesmicroservice.models.entity"
 })
-public class UsermicroserviceApplication {
+
+public class CoursesmicroserviceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UsermicroserviceApplication.class, args);
+        SpringApplication.run(CoursesmicroserviceApplication.class, args);
     }
 
 }
